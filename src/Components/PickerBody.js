@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const PickerBody = ({time, decrease, increase}) => {
+const PickerBody = ({length, decrease, increase}) => {
   return (
     <div>
       <button onClick={ decrease }>-</button>
-      <span>{time}</span>
+      <span>{length}</span>
       <button onClick={ increase }>+</button>
     </div>
   );
 };
 
 PickerBody.propTypes = {
-  time: PropTypes.number.isRequired,
+  length: PropTypes.string.isRequired,
   decrease: PropTypes.func.isRequired,
   increase: PropTypes.func.isRequired,
 };

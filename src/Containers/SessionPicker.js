@@ -27,7 +27,7 @@ class Session extends Component {
       <div>
         <PickerHeader PickerTitle="Session Length" />
         <PickerBody
-          time={ this.props.session }
+          length={ this.props.formattedSession }
           decrease={ this.decrease }
           increase={ this.increase } />
       </div>
@@ -36,7 +36,7 @@ class Session extends Component {
 }
 
 Session.propTypes = {
-  session: PropTypes.number.isRequired,
+  formattedSession: PropTypes.string.isRequired,
   decreaseSession: PropTypes.func.isRequired,
   increaseSession: PropTypes.func.isRequired,
 };

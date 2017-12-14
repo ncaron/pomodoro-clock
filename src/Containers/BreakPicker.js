@@ -27,7 +27,7 @@ class Break extends Component {
       <div>
         <PickerHeader PickerTitle="Break Length" />
         <PickerBody
-          time={ this.props.break }
+          length={ this.props.formattedBreak }
           decrease={ this.decrease }
           increase={ this.increase } />
       </div>
@@ -36,7 +36,7 @@ class Break extends Component {
 }
 
 Break.propTypes = {
-  break: PropTypes.number.isRequired,
+  formattedBreak: PropTypes.string.isRequired,
   decreaseBreak: PropTypes.func.isRequired,
   increaseBreak: PropTypes.func.isRequired,
 };
