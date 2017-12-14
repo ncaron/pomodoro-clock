@@ -1,9 +1,14 @@
 import React from 'react';
+import Header from './Header';
+import BreakPicker from '../Containers/BreakPicker';
+import SessionPicker from '../Containers/SessionPicker';
 
 const App = () => {
   return (
     <div>
-      <h1>Pomodoro Clock</h1>
+      <Header />
+      <BreakPicker />
+      <SessionPicker />
     </div>
   );
 };
