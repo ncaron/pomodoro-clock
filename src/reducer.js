@@ -122,6 +122,27 @@ export default function reducer(state = initialState, action) {
       return newState;
     }
 
+    case types.DECREASE_TIMER: {
+      let newState = Object.assign({}, state);
+
+      if (newState.sessionSeconds === 0) {
+        newState.sessionSeconds = 59;
+
+        if (newState.sessionMinutes === 0) {
+          newState.sessionMinutes = 59;
+          newState.sessionHours--;
+        } else {
+          newState.sessionMinutes--;
+        }
+      } else {
+        newState.sessionSeconds--;
+      }
+
+      newState.timer = formatTime(newState.sessionHours, newState.sessionMinutes, newState.sessionSeconds);
+
+      return newState;
+    }
+
     default:
       return state;
   }

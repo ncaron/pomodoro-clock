@@ -23,3 +23,9 @@ export function increaseSession() {
     type: types.INCREASE_SESSION
   };
 }
+
+export function decreaseTimer() {
+  return {
+    type: types.DECREASE_TIMER
+  };
+}
