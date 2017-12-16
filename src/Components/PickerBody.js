@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 
 const PickerBody = ({length, decrease, increase}) => {
   return (
-    <div>
-      <button onClick={ decrease }>-</button>
-      <span>{length}</span>
-      <button onClick={ increase }>+</button>
+    <div className="pickerBody">
+      <p>{length}</p>
+      <div>
+        <button className="pickerButton" onClick={ decrease }>-</button>
+        <button className="pickerButton" onClick={ increase }>+</button>
+      </div>
     </div>
   );
 };

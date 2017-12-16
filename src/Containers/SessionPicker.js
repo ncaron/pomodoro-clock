@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PickerHeader from '../Components/PickerHeader';
 import PickerBody from '../Components/PickerBody';
-import { decreaseSession, increaseSession } from '../actions';
+import { decreaseSession, increaseSession, resetTimer } from '../actions';
 
 class Session extends Component {
   constructor(props) {
@@ -16,15 +16,17 @@ class Session extends Component {
 
   decrease() {
     this.props.decreaseSession();
+    this.props.resetTimer();
   }
 
   increase() {
     this.props.increaseSession();
+    this.props.resetTimer();
   }
 
   render() {
     return (
-      <div>
+      <div className="sessionPicker">
         <PickerHeader PickerTitle="Session Length" />
         <PickerBody
           length={ this.props.formattedSession }
@@ -39,6 +41,7 @@ Session.propTypes = {
   formattedSession: PropTypes.string.isRequired,
   decreaseSession: PropTypes.func.isRequired,
   increaseSession: PropTypes.func.isRequired,
+  resetTimer: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -46,7 +49,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({decreaseSession, increaseSession}, dispatch);
+  return bindActionCreators({decreaseSession, increaseSession, resetTimer}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Session);

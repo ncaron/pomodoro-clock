@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const PickerHeader = ({PickerTitle}) => {
   return (
-    <h2>{PickerTitle}</h2>
+    <h2 className="pickerHeader">{PickerTitle}</h2>
   );
 };
 

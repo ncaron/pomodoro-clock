@@ -1,0 +1,144 @@
+$timer-size: 200px;
+
+body {
+  background: #333;
+  color: white;
+  font: normal 16px Helvetica, Arial, sans-serif;
+  text-align: center
+}
+
+header {
+  margin: 50px 0;
+  font-size: 40px;
+
+  @media(max-width: 450px) {
+    margin: 35px 0;
+    font-size: 30px;
+  }
+}
+
+.pickers {
+  width: 500px;
+  margin: 0 auto;
+
+  .pickerHeader {
+    font-size: 24px;
+  }
+
+  .pickerBody {
+    p {
+      margin: 20px 0;
+    }
+  }
+
+  .pickerButton {
+    background: inherit;
+    color: white;
+    height: 50px;
+    width: 50px;
+    margin: 0 10px;
+    padding: 0;
+    font-size: 40px;
+    border: none;
+    cursor: pointer;
+    transition: all .75s;
+
+    &:hover { color: gray; }
+    &:focus { outline: none; }
+  }
+
+  .breakPicker { float: left; }
+  .sessionPicker { float: right; }
+
+  &::before,
+  &::after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+
+  @media(max-width: 550px) { width: 400px; }
+
+  @media(max-width: 450px) {
+    width: 100%;
+
+    .pickerHeader { font-size: 20px; }
+
+    .breakPicker { float: none; }
+
+    .sessionPicker {
+      margin-top: 20px;
+      float: none;
+    }
+
+    .pickerButton {
+      height: 30px;
+      width: 30px;
+      line-height: 30px;
+      font-size: 30px;
+    }
+  }
+}
+
+.timer {
+  height: $timer-size;
+  width: $timer-size;
+  margin: 50px auto;
+  line-height: $timer-size;
+  font-size: 30px;
+  border: 2px solid #5aaf5a;
+  border-radius: 100%;
+  cursor: pointer;
+  user-select: none;
+
+  @media(max-width: 450px) {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.message {
+  font-size: 24px;
+
+  p { transition: all .75s; }
+  .visible { opacity: 1; }
+  .hidden { opacity: 0; }
+}
+
+.instructions {
+  margin: 40px 0 0 50px;
+  text-align: left;
+
+  p {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-decoration: underline;
+  }
+
+  ol { margin-left: 20px; }
+
+  li {
+    margin: 10px 0 10px 20px;
+    list-style-type: decimal;
+  }
+
+  @media(max-width: 450px) {
+    margin-left: 20px;
+
+    p { font-size: 18px; }
+
+    ol {
+      margin-left: 0;
+      font-size: 14px;
+    }
+  }
+}
+
+footer {
+  margin: 40px 0 20px 0;
+
+  a {
+    font-weight: bold;
+    color: #5aaf5a;
+  }
+}

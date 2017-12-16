@@ -1,11 +1,24 @@
 export default {
-  breakHours: 0,
-  breakMinutes: 5,
-  breakSeconds: 0,
+  timers: {
+    break: {
+      hours: 0,
+      minutes: 5,
+      seconds: 0,
+    },
+    session: {
+      hours: 0,
+      minutes: 25,
+      seconds: 0,
+    },
+    current: {
+      hours: 0,
+      minutes: 25,
+      seconds: 0,
+    },
+  },
   formattedBreak: '5 Minutes',
-  sessionHours: 0,
-  sessionMinutes: 25,
-  sessionSeconds: 0,
   formattedSession: '25 Minutes',
-  timer: '25:00',
+  formattedTimer: '25:00',
+  timerID: 0,
+  onBreak: false,
 };

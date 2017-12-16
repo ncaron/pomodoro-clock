@@ -1,7 +1,7 @@
 import * as types from './actionTypes';
 import initialState from './initialState';
 
-function formatLength(hours, minutes) {
+function formatLength({hours, minutes}) {
   let formattedLength = '';
 
   if (hours === 1) {
@@ -23,7 +23,7 @@ function formatLength(hours, minutes) {
   return formattedLength;
 }
 
-function formatTime(hours, minutes, seconds) {
+function formatTime({hours, minutes, seconds}) {
   let fullTime = '';
   hours = String(hours).split('');
   minutes = String(minutes).split('');
@@ -45,7 +45,7 @@ function formatTime(hours, minutes, seconds) {
   minutes = minutes.join('');
   seconds = seconds.join('');
 
-  fullTime = `${hours}:${minutes}:${seconds}`.replace(/^(00:00:|00:)/, '');
+  fullTime = `${hours}:${minutes}:${seconds}`.replace(/^(00:00:0|00:00:|00:0|00:|0)/, '');
 
   return fullTime;
 }
@@ -53,20 +53,20 @@ function formatTime(hours, minutes, seconds) {
 export default function reducer(state = initialState, action) {
   switch(action.type) {
     case types.DECREASE_BREAK: {
-      if (state.breakHours === 0 && state.breakMinutes === 1) {
+      if (state.timers.break.hours === 0 && state.timers.break.minutes === 1) {
         return state;
       }
 
       let newState = Object.assign({}, state);
 
-      if (newState.breakMinutes === 0) {
-        newState.breakMinutes = 59;
-        newState.breakHours--;
+      if (newState.timers.break.minutes === 0) {
+        newState.timers.break.minutes = 59;
+        newState.timers.break.hours--;
       } else {
-        newState.breakMinutes--;
+        newState.timers.break.minutes--;
       }
 
-      newState.formattedBreak = formatLength(newState.breakHours, newState.breakMinutes);
+      newState.formattedBreak = formatLength(newState.timers.break);
 
       return newState;
     }
@@ -74,34 +74,33 @@ export default function reducer(state = initialState, action) {
     case types.INCREASE_BREAK: {
       let newState = Object.assign({}, state);
 
-      if (newState.breakMinutes === 59) {
-        newState.breakMinutes = 0;
-        newState.breakHours++;
+      if (newState.timers.break.minutes === 59) {
+        newState.timers.break.minutes = 0;
+        newState.timers.break.hours++;
       } else {
-        newState.breakMinutes++;
+        newState.timers.break.minutes++;
       }
 
-      newState.formattedBreak = formatLength(newState.breakHours, newState.breakMinutes);
+      newState.formattedBreak = formatLength(newState.timers.break);
 
       return newState;
     }
 
     case types.DECREASE_SESSION: {
-      if (state.sessionHours === 0 && state.sessionMinutes === 1) {
+      if (state.timers.session.hours === 0 && state.timers.session.minutes === 1) {
         return state;
       }
 
       let newState = Object.assign({}, state);
 
-      if (newState.sessionMinutes === 0) {
-        newState.sessionMinutes = 59;
-        newState.sessionHours--;
+      if (newState.timers.session.minutes === 0) {
+        newState.timers.session.minutes = 59;
+        newState.timers.session.hours--;
       } else {
-        newState.sessionMinutes--;
+        newState.timers.session.minutes--;
       }
 
-      newState.timer = formatTime(newState.sessionHours, newState.sessionMinutes, newState.sessionSeconds);
-      newState.formattedSession = formatLength(newState.sessionHours, newState.sessionMinutes);
+      newState.formattedSession = formatLength(newState.timers.session);
 
       return newState;
     }
@@ -109,15 +108,54 @@ export default function reducer(state = initialState, action) {
     case types.INCREASE_SESSION: {
       let newState = Object.assign({}, state);
 
-      if (newState.sessionMinutes === 59) {
-        newState.sessionMinutes = 0;
-        newState.sessionHours++;
+      if (newState.timers.session.minutes === 59) {
+        newState.timers.session.minutes = 0;
+        newState.timers.session.hours++;
       } else {
-        newState.sessionMinutes++;
+        newState.timers.session.minutes++;
       }
 
-      newState.timer = formatTime(newState.sessionHours, newState.sessionMinutes, newState.sessionSeconds);
-      newState.formattedSession = formatLength(newState.sessionHours, newState.sessionMinutes);
+      newState.formattedSession = formatLength(newState.timers.session);
+
+      return newState;
+    }
+
+    case types.START_TIMER: {
+      let newState = Object.assign({}, state);
+
+      newState.timerID = action.timerID;
+
+      // Hides the buttons while timer is active.
+      const buttons = document.getElementsByClassName('pickerButton');
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].style.visibility = 'hidden';
+        buttons[i].style.opacity = '0';
+      }
+
+      return newState;
+    }
+
+    case types.STOP_TIMER: {
+      let newState = Object.assign({}, state);
+
+      clearInterval(newState.timerID);
+      newState.timerID = 0;
+
+      // Shows the buttons when the timer is not active.
+      const buttons = document.getElementsByClassName('pickerButton');
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].style.visibility = 'visible';
+        buttons[i].style.opacity = '1';
+      }
+
+      return newState;
+    }
+
+    case types.RESET_TIMER: {
+      let newState = Object.assign({}, state);
+
+      newState.timers.current = JSON.parse(JSON.stringify(newState.timers.session));
+      newState.formattedTimer = formatTime(newState.timers.current);
 
       return newState;
     }
@@ -125,20 +163,34 @@ export default function reducer(state = initialState, action) {
     case types.DECREASE_TIMER: {
       let newState = Object.assign({}, state);
 
-      if (newState.sessionSeconds === 0) {
-        newState.sessionSeconds = 59;
+      if (newState.timers.current.seconds === 0) {
+        newState.timers.current.seconds = 59;
 
-        if (newState.sessionMinutes === 0) {
-          newState.sessionMinutes = 59;
-          newState.sessionHours--;
+        if (newState.timers.current.minutes === 0) {
+          newState.timers.current.minutes = 59;
+          newState.timers.current.hours--;
         } else {
-          newState.sessionMinutes--;
+          newState.timers.current.minutes--;
         }
       } else {
-        newState.sessionSeconds--;
+        newState.timers.current.seconds--;
       }
 
-      newState.timer = formatTime(newState.sessionHours, newState.sessionMinutes, newState.sessionSeconds);
+      newState.formattedTimer = formatTime(newState.timers.current);
+
+      return newState;
+    }
+
+    case types.TOGGLE_BREAK: {
+      let newState = Object.assign({}, state);
+
+      newState.onBreak = !newState.onBreak;
+
+      if (newState.onBreak) {
+        newState.timers.current = JSON.parse(JSON.stringify(newState.timers.break));
+      } else {
+        newState.timers.current = JSON.parse(JSON.stringify(newState.timers.session));
+      }
 
       return newState;
     }

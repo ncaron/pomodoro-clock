@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PickerHeader from '../Components/PickerHeader';
 import PickerBody from '../Components/PickerBody';
-import { decreaseBreak, increaseBreak } from '../actions';
+import { decreaseBreak, increaseBreak, resetTimer } from '../actions';
 
 class Break extends Component {
   constructor(props) {
@@ -16,15 +16,17 @@ class Break extends Component {
 
   decrease() {
     this.props.decreaseBreak();
+    this.props.resetTimer();
   }
 
   increase() {
     this.props.increaseBreak();
+    this.props.resetTimer();
   }
 
   render() {
     return (
-      <div>
+      <div className="breakPicker">
         <PickerHeader PickerTitle="Break Length" />
         <PickerBody
           length={ this.props.formattedBreak }
@@ -39,6 +41,7 @@ Break.propTypes = {
   formattedBreak: PropTypes.string.isRequired,
   decreaseBreak: PropTypes.func.isRequired,
   increaseBreak: PropTypes.func.isRequired,
+  resetTimer: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -46,7 +49,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({decreaseBreak, increaseBreak}, dispatch);
+  return bindActionCreators({decreaseBreak, increaseBreak, resetTimer}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Break);
