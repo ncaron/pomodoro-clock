@@ -128,6 +128,7 @@ export default function reducer(state = initialState, action) {
       // Hides the buttons while timer is active.
       const buttons = document.getElementsByClassName('pickerButton');
       for (let i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
         buttons[i].style.visibility = 'hidden';
         buttons[i].style.opacity = '0';
       }
@@ -144,6 +145,7 @@ export default function reducer(state = initialState, action) {
       // Shows the buttons when the timer is not active.
       const buttons = document.getElementsByClassName('pickerButton');
       for (let i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = false;
         buttons[i].style.visibility = 'visible';
         buttons[i].style.opacity = '1';
       }
